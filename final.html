@@ -89,8 +89,8 @@ ptrain2 &lt;- training_2[, NA_values==FALSE]
 ptrain1 &lt;- ptrain1[, -(1:5)]
 ptrain2 &lt;- ptrain2[, -(1:5)]</code></pre>
 </div>
-<div id="fitting-a-model" class="section level3">
-<h3>Fitting a Model</h3>
+<div id="fitting-a-model-and-using-cross-validation" class="section level3">
+<h3>Fitting a Model and Using Cross Validation</h3>
 <pre class="r"><code>fitControl &lt;- trainControl(method=&quot;cv&quot;, number=3, verboseIter=F)
 fit &lt;- train(classe ~ ., data=ptrain1, method=&quot;rf&quot;, trControl=fitControl)</code></pre>
 <pre><code>## Loading required package: randomForest</code></pre>
@@ -107,33 +107,33 @@ confusionMatrix(ptrain2$classe,preds)</code></pre>
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 1394    0    0    0    1
-##          B    4  945    0    0    0
-##          C    0    3  852    0    0
-##          D    0    0    4  800    0
+##          A 1394    1    0    0    0
+##          B    3  945    0    1    0
+##          C    0    1  854    0    0
+##          D    0    0    1  803    0
 ##          E    0    0    0    0  901
 ## 
 ## Overall Statistics
 ##                                           
-##                Accuracy : 0.9976          
-##                  95% CI : (0.9957, 0.9987)
-##     No Information Rate : 0.2851          
+##                Accuracy : 0.9986          
+##                  95% CI : (0.9971, 0.9994)
+##     No Information Rate : 0.2849          
 ##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
 ##                                           
-##                   Kappa : 0.9969          
+##                   Kappa : 0.9982          
 ##  Mcnemar's Test P-Value : NA              
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity            0.9971   0.9968   0.9953   1.0000   0.9989
-## Specificity            0.9997   0.9990   0.9993   0.9990   1.0000
-## Pos Pred Value         0.9993   0.9958   0.9965   0.9950   1.0000
-## Neg Pred Value         0.9989   0.9992   0.9990   1.0000   0.9998
-## Prevalence             0.2851   0.1933   0.1746   0.1631   0.1839
-## Detection Rate         0.2843   0.1927   0.1737   0.1631   0.1837
+## Sensitivity            0.9979   0.9979   0.9988   0.9988   1.0000
+## Specificity            0.9997   0.9990   0.9998   0.9998   1.0000
+## Pos Pred Value         0.9993   0.9958   0.9988   0.9988   1.0000
+## Neg Pred Value         0.9991   0.9995   0.9998   0.9998   1.0000
+## Prevalence             0.2849   0.1931   0.1743   0.1639   0.1837
+## Detection Rate         0.2843   0.1927   0.1741   0.1637   0.1837
 ## Detection Prevalence   0.2845   0.1935   0.1743   0.1639   0.1837
-## Balanced Accuracy      0.9984   0.9979   0.9973   0.9995   0.9994</code></pre>
+## Balanced Accuracy      0.9988   0.9984   0.9993   0.9993   1.0000</code></pre>
 </div>
 <div id="testing-data-on-the-given-test" class="section level2">
 <h2>Testing Data on the Given Test</h2>

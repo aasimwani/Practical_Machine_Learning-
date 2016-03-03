@@ -37,7 +37,7 @@ ptrain2 <- ptrain2[, -(1:5)]
 
 ```
 
-###Fitting a Model 
+###Fitting a Model and Using Cross Validation 
 ```{r}
 
 fitControl <- trainControl(method="cv", number=3, verboseIter=F)
