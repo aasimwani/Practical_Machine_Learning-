@@ -1,0 +1,60 @@
+---
+output: html_document
+---
+```{r}
+library(caret)
+library(rpart)
+library(rpart.plot)
+
+```
+
+###Loading Data
+```{r}
+
+testing_data  <-read.csv("~/Desktop/pml-testing.csv")
+training_data <-read.csv("~/Desktop/pml-training.csv")
+```
+
+###Seperating  Data
+```{r}
+inTrain <- createDataPartition(training_data$classe,p=0.75,list=F)
+train_1 <- training_data[inTrain,]
+train_2  <-training_data[-inTrain,]
+```
+
+###Cleaning Up the Data 
+In this section I will try  to remove those variables which i feel will not have any significant impact on the outcome of our project ;Sice most of the not needed variables possess lot of missing values ,thus making then unusable.
+
+```{r}
+Not_required <- nearZeroVar(train_1)
+training_1 <-train_1[,-Not_required]
+training_2 <-train_2[,-Not_required]
+NA_values <- sapply(training_1,function(x) mean(is.na(x))) >0.95
+ptrain1 <- training_1[, NA_values==FALSE]
+ptrain2 <- training_2[, NA_values==FALSE]
+ptrain1 <- ptrain1[, -(1:5)]
+ptrain2 <- ptrain2[, -(1:5)]
+
+```
+
+###Fitting a Model 
+```{r}
+
+fitControl <- trainControl(method="cv", number=3, verboseIter=F)
+fit <- train(classe ~ ., data=ptrain1, method="rf", trControl=fitControl)
+```
+
+```{r}
+preds <- predict(fit, newdata=ptrain2)
+confusionMatrix(ptrain2$classe,preds)
+```
+
+##Testing Data on the Given Test
+```{r}
+prediction <- predict(fit,newdata = testing_data)
+prediction
+```
+
+##Conclusions 
+In this assignment i fitted the data with classification tree and random forest ,and as expected the accuracy of the random forest model was much higher then a regular classification tree.The difference in accurancy in the model was found to be as high as 48%.But keeping in mind the time it takes to load the page i decided to finally add only random forest model which was giving me the most accurate result .
+
