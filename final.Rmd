@@ -1,6 +1,4 @@
----
-output: html_document
----
+
 ```{r}
 library(caret)
 library(rpart)
@@ -38,6 +36,20 @@ ptrain2 <- ptrain2[, -(1:5)]
 ```
 
 ###Fitting a Model and Using Cross Validation 
+
+####Fitting a Classification Tree 
+```{r,eval=FALSE}
+set.seed(2345)
+model_fit <- train(classe~., data = ptrain1, method = "rpart")
+predictrp <- predict(model_fit, newdata = ptrain2)
+confusionMatrix(predictrp, ptrain2$classe)
+fancyRpartPlot(modelrp$finalModel)
+
+```
+
+Using rpart the model gave poor accuracy results and is dismissed.The accuracy was found to be just 49%.
+
+####Fitting a Random Forest Model 
 ```{r}
 
 fitControl <- trainControl(method="cv", number=3, verboseIter=F)
@@ -49,12 +61,15 @@ preds <- predict(fit, newdata=ptrain2)
 confusionMatrix(ptrain2$classe,preds)
 ```
 
-##Testing Data on the Given Test
+After testing the model on the test data set;The model accuracy was found to be around 99%.Thus we will use a regression tree for analysis of the 
+
+
+##Predictions on  20 test cases
 ```{r}
 prediction <- predict(fit,newdata = testing_data)
 prediction
 ```
 
 ##Conclusions 
-In this assignment i fitted the data with classification tree and random forest ,and as expected the accuracy of the random forest model was much higher then a regular classification tree.The difference in accurancy in the model was found to be as high as 48%.But keeping in mind the time it takes to load the page i decided to finally add only random forest model which was giving me the most accurate result .
+In this assignment i fitted the data with classification tree and random forest ,and as expected the accuracy of the random forest model was much higher then a regular classification tree.The difference in accurancy in the model was found to be as high as 48%.But keeping in mind the time it takes to load the page i decided to finally load only random forest model which was giving me the most accurate result .
 
